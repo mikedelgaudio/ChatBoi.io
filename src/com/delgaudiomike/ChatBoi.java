@@ -27,7 +27,7 @@ public class ChatBoi extends JFrame implements KeyListener{
 
     /**
      * Overrides event listener method for what key is pressed.
-     * Handles when the user click enter and error correction
+     * Handles when the user hits enter and error correction
      * @param e is derived from KeyEvent and is a letter/symbol/int/fn on keyboard
      */
     @Override
@@ -44,14 +44,25 @@ public class ChatBoi extends JFrame implements KeyListener{
         }
     }
 
+    /**
+     * Overrides event listener method for what key is released.
+     * Handles after when the user hits enter
+     * Re-enables ability to type in text box.
+     * @param e is derived from KeyEvent and is a letter/symbol/int/fn on keyboard
+     */
     @Override
     public void keyReleased(KeyEvent e){
-
+        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            inputText.setEditable(true);
+        }
     }
 
+    /**
+     * Not in use
+     * @param e
+     */
     @Override
     public void keyTyped(KeyEvent e){
-
     }
 
     /**
@@ -81,7 +92,11 @@ public class ChatBoi extends JFrame implements KeyListener{
      * @param s input provided to display text on screen
      */
     private void pushText(String s){
-        dialogText.setText(dialogText.getText() + s);
+        try {
+            dialogText.setText(dialogText.getText() + s);
+        } catch (Exception e){
+            getDefaultCloseOperation();
+        }
     }
 
 
