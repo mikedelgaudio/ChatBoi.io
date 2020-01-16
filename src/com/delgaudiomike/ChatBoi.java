@@ -15,6 +15,7 @@ import java.lang.Math;
 
 public class ChatBoi extends JFrame implements KeyListener{
 
+    //Declare variables to make JPanel, JTextAreas, and Scroll Window
     JPanel panel = new JPanel();
     JTextArea dialogText = new JTextArea(20,50);
     JTextArea inputText = new JTextArea(1,50);
@@ -24,6 +25,11 @@ public class ChatBoi extends JFrame implements KeyListener{
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
     );
 
+    /**
+     * Overrides event listener method for what key is pressed.
+     * Handles when the user click enter and error correction
+     * @param e is derived from KeyEvent and is a letter/symbol/int/fn on keyboard
+     */
     @Override
     public void keyPressed(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
@@ -84,6 +90,11 @@ public class ChatBoi extends JFrame implements KeyListener{
     }
 
 
+    /**
+     * Start of program, calls upon constructor to
+     * make a single instance of ChatBoi
+     * @param args command line (unused here)
+     */
     public static void main(String[] args) {
         System.out.println("Starting ChatBoi!");
         new ChatBoi();
