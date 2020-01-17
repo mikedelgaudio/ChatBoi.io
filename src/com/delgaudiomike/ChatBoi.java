@@ -36,10 +36,14 @@ public class ChatBoi extends JFrame implements KeyListener{
             System.out.println("Enter was pressed");
             inputText.setEditable(false); //disable further input
 
-            String grabInput = inputText.getText(); //grab the input
-            inputText.setText(""); //clear the screen
-            pushText("--> Your Name:\t" + grabInput);
-
+            if(inputText.getText().strip() == ""){
+                pushText("--> CONSOLE: You cannot enter an empty string. Please try again.");
+                inputText.setText(""); //clear the screen
+            } else {
+                String grabInput = inputText.getText(); //grab the input
+                inputText.setText(""); //clear the screen
+                pushText("--> Your Name:\t" + grabInput);
+            }
 
         }
     }
