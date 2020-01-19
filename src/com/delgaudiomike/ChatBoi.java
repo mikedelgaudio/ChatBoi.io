@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
-import java.awt.Color;
+import java.awt.*;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -19,11 +19,15 @@ public class ChatBoi extends JFrame implements KeyListener{
     JPanel panel = new JPanel();
     JTextArea dialogText = new JTextArea(20,50);
     JTextArea inputText = new JTextArea(1,50);
+    //dialogText.setLineWrap(true);
+
     JScrollPane scrollWindow = new JScrollPane(
             dialogText,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
     );
+    boolean introduction = false;
+    String userName = "";
 
     /**
      * Overrides event listener method for what key is pressed.
@@ -36,14 +40,27 @@ public class ChatBoi extends JFrame implements KeyListener{
             System.out.println("Enter was pressed");
             inputText.setEditable(false); //disable further input
 
+
             if(inputText.getText().strip() == ""){
-                pushText("--> CONSOLE: You cannot enter an empty string. Please try again.");
+                pushText("--> ChatBoi: You cannot enter an empty string. Please try again.\n");
                 inputText.setText(""); //clear the screen
             } else {
                 String grabInput = inputText.getText(); //grab the input
                 inputText.setText(""); //clear the screen
-                pushText("--> Your Name:\t" + grabInput);
+
+                //Grabbing the users name on initial bootup.
+                if(introduction == false){
+                    pushText("--> You: " + grabInput + "\n");
+                    grabInput = grabInput.substring(0,1).toUpperCase() + grabInput.substring(1).toLowerCase();  //uppercase first letter
+                    pushText("--> ChatBoi: Nice to meet you, " + grabInput + "!\n");
+                    userName = grabInput;
+                    introduction = true;
+                } else {
+                    //If the user has already input their name, just push their text to screen.
+                    pushText("--> " + userName + ": " + grabInput + "\n");
+                }
             }
+
 
         }
     }
@@ -75,20 +92,36 @@ public class ChatBoi extends JFrame implements KeyListener{
      * the panel components together.
      */
     public ChatBoi(){
-        super("Chat Bot");
-        setSize(600,400);
+        super("ChatBoi");
+
+        //Could make a UI function??
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenSize.width/3,screenSize.height/3);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         dialogText.setEditable(false);
         inputText.addKeyListener(this);
 
+        //Set line wraps
+        dialogText.setLineWrap(true);
+        inputText.setLineWrap(true);
+
+        //Format fonts/colors
+        Font dialogFont = new Font("Courier New", Font.BOLD, 14);
+        dialogText.setFont(dialogFont);
+        //dialogText.setForeground(Color.BLUE);
+
+        //Mesh together the panel
         panel.add(scrollWindow);
         panel.add(inputText);
-        panel.setBackground(new Color(255,200,0));
+        panel.setBackground(new Color(163, 38, 56));
         add(panel);
 
         setVisible(true);
+
+        //Startup text
+        pushText("--> ChatBoi: Hi there! I'm ChatBoi, your personal small talk robot. Who am I talking to??\n");
     }
 
     /**
@@ -96,11 +129,7 @@ public class ChatBoi extends JFrame implements KeyListener{
      * @param s input provided to display text on screen
      */
     private void pushText(String s){
-        try {
-            dialogText.setText(dialogText.getText() + s);
-        } catch (Exception e){
-            getDefaultCloseOperation();
-        }
+        dialogText.setText(dialogText.getText() + s);
     }
 
 
@@ -117,7 +146,6 @@ public class ChatBoi extends JFrame implements KeyListener{
     public static void main(String[] args) {
         System.out.println("Starting ChatBoi!");
         new ChatBoi();
-
     }
 
 
