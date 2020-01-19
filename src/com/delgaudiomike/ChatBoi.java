@@ -1,15 +1,21 @@
 package com.delgaudiomike;
+//Swing Imports
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
-import java.awt.*;
-
+//AWT imports
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-
 import java.awt.event.WindowEvent;
+
+//Lang Imports
 import java.lang.Math;
 
 
@@ -17,10 +23,10 @@ public class ChatBoi extends JFrame implements KeyListener{
 
     //Declare variables to make JPanel, JTextAreas, and Scroll Window
     JPanel panel = new JPanel();
-    JTextArea dialogText = new JTextArea(20,50);
-    JTextArea inputText = new JTextArea(1,50);
-    //dialogText.setLineWrap(true);
-
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    JTextArea dialogText = new JTextArea(30,65);
+    JTextArea inputText = new JTextArea(1,40);
+   // JLabel instructUser = new JLabel()
     JScrollPane scrollWindow = new JScrollPane(
             dialogText,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -58,6 +64,7 @@ public class ChatBoi extends JFrame implements KeyListener{
                 } else {
                     //If the user has already input their name, just push their text to screen.
                     pushText("--> " + userName + ": " + grabInput + "\n");
+                    processUserInput(grabInput);
                 }
             }
 
@@ -91,13 +98,13 @@ public class ChatBoi extends JFrame implements KeyListener{
      * Displays title of UI Box, resizability, size, color, and adding
      * the panel components together.
      */
-    public ChatBoi(){
+    private ChatBoi(){
         super("ChatBoi");
 
         //Could make a UI function??
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenSize.width/3,screenSize.height/3);
-        setResizable(false);
+        //setSize(screenSize.width/3,screenSize.height/3);
+        setSize(600, 600);
+        setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         dialogText.setEditable(false);
@@ -132,8 +139,62 @@ public class ChatBoi extends JFrame implements KeyListener{
         dialogText.setText(dialogText.getText() + s);
     }
 
+    /**
+     * Takes user input and decides what ChatBoi's response will be.
+     * @param userInput is grabInput from when the Enter key is pressed
+     */
+    private void processUserInput(String userInput){
+        //TODO
+        pushText(userInput);
+    }
 
-    void WindowClosing(WindowEvent e){
+    /**
+     * HELPER - Provides func processUserInput() with the necessary keyword for ChatBoi to respond to.
+     * @param userInput
+     * @return keyword for ChatBoi to use
+     */
+    private String grabWords(String userInput){
+        //TODO
+        String keyword = "";
+
+        String wordFound = "";
+        for (int i = 0; i < userInput.length(); i++){
+            char c = userInput.charAt(i);
+            if(c != ' '){
+                wordFound += c;
+            } else {
+                //Word is complete, process to see if its a keyword
+                //keyword = searchForKeyword(wordFound);
+                if(keyword != ""){
+                    break;
+                }
+
+            }
+        }
+
+        //make sure to have else where the keyword may be nil therefore ChatBoi will just say a default response
+        return keyword;
+
+    }
+
+    /**
+     * HELPER - Takes word found from grabWords() and decides if it is a known keyword.
+     * @param wordFound is provided from
+     * @return keyword for grabWords()
+     */
+    private String searchForKeyword(String wordFound){
+        String keyword = "";
+
+        return keyword;
+    }
+
+
+    /**
+     * Cleanup work to implement
+     * @param e
+     */
+    private void WindowClosing(WindowEvent e){
+        //TODO
         System.out.println("Closing ChatBoi");
     }
 
@@ -145,7 +206,7 @@ public class ChatBoi extends JFrame implements KeyListener{
      */
     public static void main(String[] args) {
         System.out.println("Starting ChatBoi!");
-        new ChatBoi();
+        SwingUtilities.invokeLater(() -> new ChatBoi());
     }
 
 
