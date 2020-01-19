@@ -43,12 +43,11 @@ public class ChatBoi extends JFrame implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            System.out.println("Enter was pressed");
             inputText.setEditable(false); //disable further input
 
 
             if(inputText.getText().strip() == ""){
-                pushText("--> ChatBoi: You cannot enter an empty string. Please try again.\n");
+                pushText("ChatBoi: You cannot enter an empty string. Please try again.");
                 inputText.setText(""); //clear the screen
             } else {
                 String grabInput = inputText.getText(); //grab the input
@@ -56,14 +55,14 @@ public class ChatBoi extends JFrame implements KeyListener{
 
                 //Grabbing the users name on initial bootup.
                 if(introduction == false){
-                    pushText("--> You: " + grabInput + "\n");
+                    pushText("You: " + grabInput);
                     grabInput = grabInput.substring(0,1).toUpperCase() + grabInput.substring(1).toLowerCase();  //uppercase first letter
-                    pushText("--> ChatBoi: Nice to meet you, " + grabInput + "!\n");
+                    pushText("ChatBoi: Nice to meet you, " + grabInput + "!");
                     userName = grabInput;
                     introduction = true;
                 } else {
                     //If the user has already input their name, just push their text to screen.
-                    pushText("--> " + userName + ": " + grabInput + "\n");
+                    pushText( userName + ": " + grabInput);
                     processUserInput(grabInput);
                 }
             }
@@ -126,9 +125,15 @@ public class ChatBoi extends JFrame implements KeyListener{
         add(panel);
 
         setVisible(true);
+/*        panel.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                System.out.println("Frame closing");
+            }
+        });*/
 
         //Startup text
-        pushText("--> ChatBoi: Hi there! I'm ChatBoi, your personal small talk robot. Who am I talking to??\n");
+        pushText("ChatBoi: Hi there! I'm ChatBoi, your personal small talk robot. Who am I talking to??");
     }
 
     /**
@@ -136,7 +141,7 @@ public class ChatBoi extends JFrame implements KeyListener{
      * @param s input provided to display text on screen
      */
     private void pushText(String s){
-        dialogText.setText(dialogText.getText() + s);
+        dialogText.setText(dialogText.getText() + "--> " + s + "\n");
     }
 
     /**
@@ -144,8 +149,22 @@ public class ChatBoi extends JFrame implements KeyListener{
      * @param userInput is grabInput from when the Enter key is pressed
      */
     private void processUserInput(String userInput){
-        //TODO
-        pushText(userInput);
+        pushText("ChatBoi: " + giveResponse( grabWords(userInput) ) );
+    }
+
+    /**
+     * Provides a phrase for ChatBoi to respond with to user. Performs the main functionality.
+     * @param givenKeyword keyword passed in found from other helper funcs
+     * @return response for ChatBoi to say in processUserInput()
+     */
+    private String giveResponse(String givenKeyword){
+        String response = "";
+        boolean resultFound = false;
+
+        if(resultFound == false){
+            response += "default text randomizer here.";
+        }
+        return response;
     }
 
     /**
@@ -164,11 +183,10 @@ public class ChatBoi extends JFrame implements KeyListener{
                 wordFound += c;
             } else {
                 //Word is complete, process to see if its a keyword
-                //keyword = searchForKeyword(wordFound);
+                keyword = searchForKeyword(wordFound);
                 if(keyword != ""){
-                    break;
+                    return keyword;
                 }
-
             }
         }
 
@@ -183,20 +201,14 @@ public class ChatBoi extends JFrame implements KeyListener{
      * @return keyword for grabWords()
      */
     private String searchForKeyword(String wordFound){
+        System.out.println("Word passed in searchForKeyword() --> " + wordFound);
+
         String keyword = "";
 
-        return keyword;
+        System.out.println("Word found in searchForKeyword() --> " + keyword);
+        return wordFound;
     }
 
-
-    /**
-     * Cleanup work to implement
-     * @param e
-     */
-    private void WindowClosing(WindowEvent e){
-        //TODO
-        System.out.println("Closing ChatBoi");
-    }
 
 
     /**
